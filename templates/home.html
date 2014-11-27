@@ -1,12 +1,142 @@
 {% extends "base.html" %}
 
-{% block javascript %}
+{% block head %}
 
 <script type="text/javascript">
 
+    var question_list;
+    var question_index;
+
     $(document).ready(function() {
-        console.log( "ready!" );
+
+        $("#category-buttons").on('click', '[id^=cat-pk]', function(){
+            var cat_pk = $(this).attr('id').split('-')[2];
+            jsonGetQuestions(cat_pk);
+        });
+
+
     });
+
+    function jsonGetQuestions(cat_pk) {
+        console.log("Json Get Questions") // sanity check
+        $.ajax({
+            url : "get-questions/", // the endpoint
+            type : "GET", // http method
+            data : { cat_pk : cat_pk}, // data sent with the get request
+
+            // handle a successful response
+            success : function(data) {
+                questionsInit(data);
+                console.log(" - success");
+                //console.log(data);
+                renderInit();
+            },
+
+            // handle a non-successful response
+            error : function(xhr,errmsg,err) {
+                $('#results').html('<div class="alert alert-danger" role="alert">Oops! We have encountered an error: ' + errmsg + '</div>');
+                console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            }
+        });
+
+    }
+
+    function renderActive(){
+        var $activeElement = $('#question-' + questionsGetID());
+        $activeElement.addClass('active');
+        $activeElement.find('input').prop('disabled', false);
+
+    }
+
+    function renderInit(){
+        /* Example Question:
+            q_id = 2
+            placeholder: "sein"
+            answer: "ist"
+            q_text = Karl [ist] erst gestern zurückgekehrt.
+         */
+        console.log("Render Questions");
+        var answer_regex = /\[(.+)\]/;
+        var question;
+        $("#questions").html("");
+        while(questionsHasNext()){
+            question = questionsGetNext();
+            $("#questions").append(renderSingle(question));
+        }
+
+        questionsSetStart();
+        renderActive();
+
+        function renderSingle(question){
+            var single_html = '<div class="row"><div class="col-md-12"><div id="question-' + question.q_id + '">';
+            single_html += replaceBracketContent(question.q_text, renderInputHtml());
+            single_html += '</div></div></div>';
+            return single_html;
+        }
+
+        function renderInputHtml(){
+            var bc = getBracketContent(question.q_text, answer_regex);
+            if ( bc == question.answer){
+                 return '<input type="text" disabled="disabled" placeholder="' + question.placeholder + '"></input>';
+            }
+            // Error
+            return '<strong style="color:red">' + bc + ' or ' + question.answer + '?</strong>';
+        }
+
+        function getBracketContent(string){
+            var matched_string = answer_regex.exec(string);
+            return matched_string[1];
+        }
+
+        function replaceBracketContent(string, replacement){
+            return string.replace(answer_regex, replacement, answer_regex);
+        }
+    }
+
+
+    function questionsInit(data){
+        question_list = data;
+        questionsSetStart();
+        return question_list;
+    }
+
+    function questionsGetList(){
+        return question_list;
+    }
+
+    function questionsGetNext(){
+        if (questionsHasNext()){
+            question_index++;
+            return question_list[question_index];
+        }
+        questionsSetStart();
+        return [];
+    }
+
+    function questionPeekNext(){
+        if (questionsHasNext()){
+            return question_list[question_index + 1];
+        }
+        return [];
+    }
+
+    function questionsHasNext(){
+        if( question_index + 1 <= question_list.length - 1){
+            return true;
+        }
+        return false;
+    }
+
+    function questionsSetStart(){
+        question_index =  -1;
+        return question_index;
+    }
+
+    function questionsGetID(){
+        return question_index + 2;
+    }
+
+
 
 </script>
 
@@ -17,37 +147,15 @@
 {% block content %}
 
 
-<!-- Static navbar -->
-<nav class="navbar navbar-default" role="navigation">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-        </button>
-        <a class="navbar-brand" href="#">Kanst du deutsh?</a>
+    <!-- Main component for a primary marketing message or call to action -->
+    <div class="row" id="category-buttons">
+        <div class="col-md-4">
+            {% for cat in question_categories %}
+            <button type="button" class="btn btn-primary" id="cat-pk-{{ cat.pk }}" name="cat-pk" value="{{ cat.pk }}" >{{ cat.category_plural }}</button>
+            {% endfor %}
+            <div id="results"></div>
+        </div>
     </div>
-
-</div><!--/.container-fluid -->
-</nav>
-
-<!-- Main component for a primary marketing message or call to action -->
-<div class="jumbotron">
-  <form style="margin: 0; padding: 0;" action="" method="GET">
-    {% for question in questions %}
-    <p>
-        {{ question }}            
-        <input name="submission" style="display: inline;" type="text"/>
-        <input name="question_id" value="{{ question.id }}" type="hidden"/>    
-    </p>
-    {% endfor %}
-</form>  
-</div>
-{% if reactionGif %}
-<div class="row" id="reaction-gif">
-<div class="col-md-6 col-md-offset-3">
-        <img src="{{reactionGif}}">
-    </div>
-</div>
-{% endif %}
 
 
 {% endblock %}

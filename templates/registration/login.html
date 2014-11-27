@@ -1,0 +1,39 @@
+{% extends "registration/base.html" %}
+{% load staticfiles %}
+
+{% block head %}
+  <title>Login</title>
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    {% if form.errors %}
+        <div class="alert alert-danger" role="alert">Oh fiddlesticks! Please try again.</div>
+      {% endif %}
+
+    <section>
+      <form method="post" action="." class="form-signin" role="form">
+        {% csrf_token %}
+        <fieldset>
+          <legend>Login</legend>
+        <p>
+          <label for="id_username">Username:</label>
+          {{ form.username }}
+        </p>
+        <p>
+          <label for="id_password">Password:</label>
+          {{ form.password }}
+        </p>
+        {% if next %}
+          <input type="hidden" name="next" value="{{ next }}" />
+        {% else %}
+          <input type="hidden" name="next" value="/" />
+        {% endif %}
+        <button class="btn btn-primary btn-block" type="submit">Sign in</button>
+        </fieldset>
+      </form>
+    </section>
+
+  </div>
+
+{% endblock %}

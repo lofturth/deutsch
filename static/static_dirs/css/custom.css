@@ -6,3 +6,19 @@ body {
 .navbar {
   margin-bottom: 20px;
 }
+.container {
+  width: auto;
+  max-width: 680px;
+  padding: 0 15px;
+}
+.container .text-muted {
+  margin: 20px 0;
+}
+
+.sentence{
+  margin-bottom: 10px;
+}
+
+#quiz-footer{
+  margin-top: 40px;
+}

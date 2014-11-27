@@ -22,6 +22,10 @@ TEMPLATE_DEBUG = True
 ALLOWED_HOSTS = []
 
 
+LOGIN_URL = '/login/'
+
+LOGOUT_URL = '/logout/'
+
 # Application definition
 
 INSTALLED_APPS = (
@@ -32,7 +36,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'south',
-    'questions',    
+    'quizzes',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -42,6 +46,16 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'deutsch.middleware.RequireLoginMiddleware',
+)
+
+LOGIN_REQUIRED_URLS = (
+    r'/(.*)$',  # TODO interpret this regex.
+)
+LOGIN_REQUIRED_URLS_EXCEPTIONS = (
+    r'/login(.*)$',
+    r'/logout(.*)$',
+    r'/staff(.*)$',
 )
 
 ROOT_URLCONF = 'deutsch.urls'
@@ -76,10 +90,10 @@ TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'templates')
 )
 
-##TEMPLATE_CONTEXT_PROCESSORS = (
-##    "django.contrib.auth.context_processors.auth",
-##    "django.core.context_processors.request",
-##)
+TEMPLATE_CONTEXT_PROCESSORS = (
+    "django.contrib.auth.context_processors.auth",
+    "django.core.context_processors.request",
+)
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/

@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block head %}
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+
+    });
+
+</script>
+
+
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="quiz-header">
+        <div class="row">
+            <div class="col-sm-12">
+                <div id="title">
+                    <h2>{{quiz.title}}</h2>
+                    <br>
+                </div>
+                <div id="description">
+                    {% autoescape off %}
+                    <h4>{{quiz.instructions}}</h4>
+                    {% endautoescape %}
+                </div>
+            </div>
+        </div>
+        <br>
+    </div>
+
+    <div id="quiz-content">
+        {% for s in quiz.sentence.all %}
+            <div class="row sentence">
+                <div class="col-sm-1">
+                    <p>{{ s.pk }}</p>
+                </div>
+                <div class="col-sm-11">
+                    <div id="sentence-{{ s.pk }}">
+                        {{ s.text }}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div id="quiz-footer">
+        <div class="row">
+            <div class="col-sm-3 pull-right">
+                <button type="button" class="btn btn-primary">Submit quiz</button>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}
+
+
