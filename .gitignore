@@ -2,6 +2,7 @@
 db.sqlite3
 secret_key.py
 .idea/
+quizzes/migrations/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

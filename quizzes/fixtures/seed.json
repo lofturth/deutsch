@@ -1,0 +1,107 @@
+[
+  {
+    "model": "quizzes.verb",
+    "pk": 1,
+    "fields": {
+      "infinitive": "dürfen",
+      "ich_present": "darf",
+      "du_present": "darfst",
+       "er_present":  "darf",
+       "wir_present": "dürfen",
+       "ihr_present": "dürft",
+       "sie_present": "dürfen"
+    }
+  },
+  {
+    "model": "quizzes.verb",
+    "pk": 2,
+    "fields": {
+      "infinitive": "können",
+      "ich_present": "kann",
+      "du_present": "kannst",
+      "er_present":  "kann",
+      "wir_present": "können",
+      "ihr_present": "könnt",
+      "sie_present": "kann"
+    }
+  },
+  {
+    "model": "quizzes.verb",
+    "pk": 3,
+    "fields": {
+      "infinitive": "mögen",
+      "ich_present": "mag",
+      "du_present": "magst",
+       "er_present":  "mag",
+       "wir_present": "mögen",
+       "ihr_present": "mögt",
+       "sie_present": "magen"
+    }
+  },
+  {
+    "model": "quizzes.verb",
+    "pk": 4,
+    "fields": {
+      "infinitive": "müssen",
+      "ich_present": "muss",
+      "du_present": "musst",
+       "er_present":  "muss",
+       "wir_present": "müssen",
+       "ihr_present": "müsst",
+       "sie_present": "müssen"
+    }
+  },
+  {
+    "model": "quizzes.verb",
+    "pk": 5,
+    "fields": {
+      "infinitive": "sollen",
+      "ich_present": "soll",
+      "du_present": "sollst",
+       "er_present":  "soll",
+       "wir_present": "sollen",
+       "ihr_present": "sollt",
+       "sie_present": "sollen"
+    }
+  },
+  {
+    "model": "quizzes.verb",
+    "pk": 6,
+    "fields": {
+      "infinitive": "wollen",
+      "ich_present": "will",
+      "du_present": "willst",
+       "er_present":  "will",
+       "wir_present": "wollen",
+       "ihr_present": "wollt",
+       "sie_present": "wollen"
+    }
+  },
+  {
+    "model": "quizzes.sentence",
+    "pk": 1,
+    "fields": {
+      "title": "Willi",
+      "text": "Willi hat Magenschmerzen. Der Arzt sagt, er [sollen:er, müssen:er] viel spazieren gehen. Er [dürfen:er] keinen Kaffee trinken. Er [dürfen:er] auck keine Schololade essen."
+    }
+  },
+  {
+    "model": "quizzes.sentence",
+    "pk": 2,
+    "fields": {
+      "title": "Erna",
+      "text": "Erna hat Schmerzen, irh Hals tut weh. sie [sollen:sie, wollen:sie, dürfen:sie]. Was [sollen:sie, mögen:sie] sie tun? - Der Arat sagt: Sie [sollen:sie] Kamillentee trinken, Sie [müssen:sie] vorsichtig sein."
+    }
+  },
+  {
+    "model": "quizzes.quiz",
+    "pk": 1,
+    "fields": {
+      "title": "testquiz",
+    "description": "Lektion 6",
+      "instructions": "Aufgabe - Modalverben. Erganzen Sie sinnvoll."
+    }
+  }
+
+  
+]

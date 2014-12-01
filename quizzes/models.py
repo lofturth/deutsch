@@ -53,7 +53,7 @@ class Quiz(models.Model):
     title = models.CharField(max_length=50)
     description = models.TextField(blank=True)
     instructions = models.TextField(blank=True)
-    sentence = models.ManyToManyField(Sentence)
+    sentence = models.ManyToManyField(Sentence, blank=True)
     columns = models.SmallIntegerField(blank=True, default=1)
 
     class Meta:
