@@ -5,6 +5,8 @@ from django.db import models
 from django.contrib.auth.models import User
 import re
 from django.db.models.signals import post_save
+from django.contrib import messages
+import pprint as pp
 
 class Verb(models.Model):
     infinitive = models.CharField(max_length=50)
@@ -27,24 +29,29 @@ class Sentence(models.Model):
     text = models.TextField()
     verb = models.ManyToManyField(Verb)
 
-    # def save(self):
-    #     verbs = []
-    #     brackets = re.findall('\[[^\]]+\]', getattr(self, 'text'))
-    #     for b in brackets:
-    #         split = b.strip('[]').split(':')
-    #         try:
-    #             self.verb.add(Verb.objects.get(infinitive=split[0]))
-    #         except Verb.DoesNotExist:
-    #             print 'Error put something better here'
-    #     super(Sentence, self).save()
+    def save(self):
+        verb_obj = []
+
+
+        super(Sentence, self).save()
 
     def __unicode__(self):
         return "%s - %s" % (self.id, self.title)
 
 def add_model_verb(sender, instance, created, **kwargs):
-    print "asdf"
-    test = Verb.objects.get(infinitive='mögen')
-    instance.verb.add(test)
+    # Find all brackets of the form fx. [mögen:er, können:sie]
+    print "Clear all verbs"
+    instance.verb.clear()
+    verbs = re.findall('(?:\[|,) *(\w+):', getattr(instance, 'text'), re.UNICODE)
+    for verb in verbs:
+        try:
+            verb_obj = Verb.objects.get(infinitive=verb)
+            if verb_obj not in instance.verb.all():
+                instance.verb.add(verb_obj)
+                print "add verb " + verb_obj.infinitive
+        except Verb.DoesNotExist:
+            print "verb " + verb + " does not exist."
+
 
 post_save.connect(add_model_verb, sender=Sentence)
 
