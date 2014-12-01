@@ -13,22 +13,21 @@ def home(request):
 
 
 def quiz(request, quiz_pk):
+
+    print request.GET
     quiz_obj = get_object_or_404(Quiz, pk=quiz_pk)
 
-    sentences = quiz_obj.sentence.all()
-    for s in sentences:
-        slice_sentence(s)
+    orginal_sentences = quiz_obj.sentence.all()
+    sentences = []
 
-    context = {'quiz': quiz_obj}
+    for s in orginal_sentences:
+        s.render_text = re.sub('\[[^\]]+\]', '[blank]', s.text)
+        sentences.append(s)
+
+    context = {'quiz': quiz_obj, 'sentences': sentences}
     template = "quiz.html"
     return render(request, template, context)
 
-
-def slice_sentence(sentence):
-    #split = re.compile('^\s*([a-z]+)\s*$', re.IGNORECASE).split(sentence.text)
-    split = re.split('(\[.+\])', sentence.text)
-    print split
-    return split
 
 
 

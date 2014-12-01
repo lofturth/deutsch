@@ -6,6 +6,22 @@
 
     $(document).ready(function() {
 
+        $('[id^=sentence-]').each(function () {
+            var sentece_num = $(this).attr('id').match(/[\d]+$/);
+            sentence = $(this).text();
+            var re = /\[blank\]/;
+            var count = 1;
+            var match = sentence.match(re);
+            while (match){
+                input_html = '<input type="text" name="' + sentece_num + '-' + count +'"></input>';
+                sentence = sentence.replace(re, input_html);
+                match = sentence.match(re);
+                count++;
+            }
+            $(this).html(sentence);
+
+        });
+
     });
 
 </script>
@@ -32,29 +48,31 @@
         </div>
         <br>
     </div>
-
     <div id="quiz-content">
-        {% for s in quiz.sentence.all %}
-            <div class="row sentence">
-                <div class="col-sm-1">
-                    <p>{{ s.pk }}</p>
-                </div>
-                <div class="col-sm-11">
-                    <div id="sentence-{{ s.pk }}">
-                        {{ s.text }}
+        <form action="" method="GET">
+            {% for s in sentences%}
+                <div class="row sentence">
+                    <div class="col-sm-1">
+                        <p>{{ forloop.counter }}</p>
+                    </div>
+                    <div class="col-sm-11">
+                        <div id="sentence-{{ s.id }}">
+                            {{ s.render_text }}
+                        </div>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
     </div>
 
     <div id="quiz-footer">
         <div class="row">
             <div class="col-sm-3 pull-right">
-                <button type="button" class="btn btn-primary">Submit quiz</button>
+                <button type="submit" class="btn btn-primary">Submit quiz</button>
             </div>
         </div>
     </div>
+
+        </form>
 
 
 

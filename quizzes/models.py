@@ -1,6 +1,10 @@
+
+# -*- coding: utf-8 -*-
+
 from django.db import models
 from django.contrib.auth.models import User
-
+import re
+from django.db.models.signals import post_save
 
 class Verb(models.Model):
     infinitive = models.CharField(max_length=50)
@@ -23,8 +27,26 @@ class Sentence(models.Model):
     text = models.TextField()
     verb = models.ManyToManyField(Verb)
 
+    # def save(self):
+    #     verbs = []
+    #     brackets = re.findall('\[[^\]]+\]', getattr(self, 'text'))
+    #     for b in brackets:
+    #         split = b.strip('[]').split(':')
+    #         try:
+    #             self.verb.add(Verb.objects.get(infinitive=split[0]))
+    #         except Verb.DoesNotExist:
+    #             print 'Error put something better here'
+    #     super(Sentence, self).save()
+
     def __unicode__(self):
         return "%s - %s" % (self.id, self.title)
+
+def add_model_verb(sender, instance, created, **kwargs):
+    print "asdf"
+    test = Verb.objects.get(infinitive='mögen')
+    instance.verb.add(test)
+
+post_save.connect(add_model_verb, sender=Sentence)
 
 
 class Quiz(models.Model):
