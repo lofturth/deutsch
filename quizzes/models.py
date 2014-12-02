@@ -24,34 +24,45 @@ class Verb(models.Model):
         return "%s" % self.infinitive
 
 
+class VerbDetail(models.Model):
+    verb = models.ManyToManyField(Verb)
+    position = models.SmallIntegerField()
+    verb_mode = models.CharField(max_length=20, null=True)
+
+    def __unicode__(self):
+        return "%s-%s" % (self.position, self.verb)
+
+
 class Sentence(models.Model):
     title = models.CharField(max_length=50)
     text = models.TextField()
-    verb = models.ManyToManyField(Verb)
-
-    def save(self):
-        verb_obj = []
-
-
-        super(Sentence, self).save()
+    verb = models.ManyToManyField(VerbDetail, blank=True)
 
     def __unicode__(self):
         return "%s - %s" % (self.id, self.title)
 
-def add_model_verb(sender, instance, created, **kwargs):
-    # Find all brackets of the form fx. [mögen:er, können:sie]
-    print "Clear all verbs"
-    instance.verb.clear()
-    verbs = re.findall('(?:\[|,) *(\w+):', getattr(instance, 'text'), re.UNICODE)
-    for verb in verbs:
-        try:
-            verb_obj = Verb.objects.get(infinitive=verb)
-            if verb_obj not in instance.verb.all():
-                instance.verb.add(verb_obj)
-                print "add verb " + verb_obj.infinitive
-        except Verb.DoesNotExist:
-            print "verb " + verb + " does not exist."
 
+def add_model_verb(sender, instance, created, **kwargs):
+    brackets = re.findall('\[([^\]]+)\]', getattr(instance, 'text'), re.UNICODE)
+    print brackets
+    for bracket in brackets:
+        print re.findall('[\] ,]*(\w+):', bracket, re.UNICODE)
+
+
+
+
+    # Find all brackets of the form fx. [mögen:er, können:sie]
+    # print "Clear all verbs"
+    # instance.verb.clear()
+    # verbs = re.findall('(?:\[|,) *(\w+):', getattr(instance, 'text'), re.UNICODE)
+    # for verb in verbs:
+    #     try:
+    #         verb_obj = Verb.objects.get(infinitive=verb)
+    #         if verb_obj not in instance.verb.all():
+    #             instance.verb.add(verb_obj)
+    #             print "add verb " + verb_obj.infinitive
+    #     except Verb.DoesNotExist:
+    #         print "verb " + verb + " does not exist."
 
 post_save.connect(add_model_verb, sender=Sentence)
 

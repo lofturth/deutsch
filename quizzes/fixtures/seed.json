@@ -82,7 +82,7 @@
     "pk": 1,
     "fields": {
       "title": "Willi",
-      "text": "Willi hat Magenschmerzen. Der Arzt sagt, er [sollen:er, müssen:er] viel spazieren gehen. Er [dürfen:er] keinen Kaffee trinken. Er [dürfen:er] auck keine Schololade essen."
+      "text": "Willi hat Magenschmerzen. Der Arzt sagt, er [sollen:er_present, müssen:er_present] viel spazieren gehen. Er [dürfen:er_present] keinen Kaffee trinken. Er [dürfen:er_present] auck keine Schololade essen."
     }
   },
   {
@@ -90,7 +90,7 @@
     "pk": 2,
     "fields": {
       "title": "Erna",
-      "text": "Erna hat Schmerzen, irh Hals tut weh. sie [sollen:sie, wollen:sie, dürfen:sie]. Was [sollen:sie, mögen:sie] sie tun? - Der Arat sagt: Sie [sollen:sie] Kamillentee trinken, Sie [müssen:sie] vorsichtig sein."
+      "text": "Erna hat Schmerzen, irh Hals tut weh. sie [sollen:sie_present, wollen:sie_present, dürfen:sie_present]. Was [sollen:sie_present, mögen:sie_present] sie tun? - Der Arat sagt: Sie [sollen:sie_present] Kamillentee trinken, Sie [müssen:sie_present] vorsichtig sein."
     }
   },
   {
